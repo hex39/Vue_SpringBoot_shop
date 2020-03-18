@@ -1,0 +1,10 @@
+git clone的速度实在太慢；
+使用了以下这些命令来通过SSR提高下载、上传的速度：
+
+git config --global https.proxy http://127.0.0.1:1080
+git config --global https.proxy https://127.0.0.1:1080
+
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+
+我一般使用http方式的全局代理，如果是socks5就替换ip前的http即可；
