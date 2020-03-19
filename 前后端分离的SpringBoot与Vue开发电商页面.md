@@ -1,10 +1,10 @@
-# 前后端分离的SpringBoot与Vue开发电商项目
+# 前后端分离的SpringBoot与Vue开发电商页面
 
 - ### 简介
 
   前端页面使用了vue框架，而后端则使用了springboot与mybatis。
 
-  <img src="C:\Users\miku\AppData\Roaming\Typora\typora-user-images\image-20200316201241200.png" alt="image-20200316201241200" style="zoom:80%;" />
+  ![image-20200316201241200](前后端分离的SpringBoot与Vue开发电商页面.assets/image-20200316201241200.png)
 
 - ### vue的使用
 
@@ -41,7 +41,7 @@
 
   ​	我是这么理解的：
 
-  <img src="C:\Users\miku\AppData\Roaming\Typora\typora-user-images\image-20200316203234673.png" alt="image-20200316203234673" style="zoom: 80%;" />
+  ![image-20200316203234673](前后端分离的SpringBoot与Vue开发电商页面.assets/image-20200316203234673.png)
 
   ​	el将id挂载，data将数据传到message里
 
@@ -49,9 +49,7 @@
 
   ### 页面展示效果
 
-  ![image-20200316204204811](C:\Users\miku\AppData\Roaming\Typora\typora-user-images\image-20200316204204811.png)
-
-  
+  ![image-20200316204204811](前后端分离的SpringBoot与Vue开发电商页面.assets/image-20200316204204811.png)
 
   
 
@@ -61,12 +59,12 @@
 
   head部，form部，table部；
 
-  ![image-20200316204550407](C:\Users\miku\AppData\Roaming\Typora\typora-user-images\image-20200316204550407.png)
+  ![image-20200316204550407](前后端分离的SpringBoot与Vue开发电商页面.assets/image-20200316204550407.png)
 
   首先搞三个div
 
   ```html
-  <body>
+<body>
       <div id="container">
           <div id="head"></div> 
           <div id="form-warp"></div> 
@@ -74,9 +72,9 @@
       </div>
   </body>
   ```
-
+  
   ```html
-  <head>
+<head>
       <meta charset="utf-8" />
       <title>并夕夕电商页</title>
       <style>
@@ -89,19 +87,19 @@
       </style>
   </head>
   ```
-
-  因为div没有任何东西，成了一条直线，往里面填充内容即可。![image-20200316205736996](C:\Users\miku\AppData\Roaming\Typora\typora-user-images\image-20200316205736996.png)
-
   
+  因为div没有任何东西，成了一条直线，往里面填充内容即可。
+
+  ![image-20200316205736996](前后端分离的SpringBoot与Vue开发电商页面.assets/image-20200316205736996.png)
 
   经过很久时间，不断调整的样式后：
 
-  ![image-20200316212410671](C:\Users\miku\AppData\Roaming\Typora\typora-user-images\image-20200316212410671.png)
+  ![image-20200316212410671](前后端分离的SpringBoot与Vue开发电商页面.assets/image-20200316212410671.png)
 
   css样式：
 
   ```css
-  <style>
+<style>
       #container{
           margin: 0 auto;
           text-align: center;
@@ -137,11 +135,11 @@
       }
   </style>
   ```
-
+  
   body体：
 
   ```html
-  <body>
+<body>
   
       <div id="container">
           <div class="header">
@@ -154,7 +152,7 @@
   
   </body>
   ```
-
+  
   
 
   
@@ -162,7 +160,7 @@
   ### 添加商品页面的实现
 
   对商品页div(form-warp)进行添加
-  
+
   ```html
   <div class="form-warp">
       <div class="sub_title">添加商品</div>
@@ -181,11 +179,11 @@
           <button>确认添加</button>
           <button>重置信息</button>
       </div>
-</div>
+  </div>
   ```
 
   调整[添加商品]的字样，列间距：
-  
+
   ```css
   .form-warp{
   margin: 10px;
@@ -209,17 +207,17 @@
   }
   .form-btn{
   padding: 12px;
-}
+  }
   ```
 
-  ![image-20200316214729169](C:\Users\miku\AppData\Roaming\Typora\typora-user-images\image-20200316214729169.png)
+  ![image-20200316214729169](前后端分离的SpringBoot与Vue开发电商页面.assets/image-20200316214729169.png)
 
   
 
   ### 商品列表的实现
 
   对div(table-warp)进行添加：
-  
+
   ```html
   <div class="table-warp">
       <div class="sub_title">商品列表</div>
@@ -252,11 +250,11 @@
           <a>清空全部</a>
       </div>
   </div>
-</div>
+  </div>
   ```
 
   css样式：
-  
+
   ```css
   .table-warp{
       margin: 10px;
@@ -268,12 +266,12 @@
       width: 80px;
       color: #ffff;
       background: rgb(53,73,93);
-}
+  }
   ```
 
   注意：1111是负责对选中的数组进行回显预留的位置
-  
-  ![image-20200316215246644](C:\Users\miku\AppData\Roaming\Typora\typora-user-images\image-20200316215246644.png)
+
+  ![image-20200316215246644](前后端分离的SpringBoot与Vue开发电商页面.assets/image-20200316215246644.png)
 
 
 
@@ -451,7 +449,7 @@
 
 在shopApplication启动类平级目录创5个包：
 
-<img src="C:\Users\miku\AppData\Roaming\Typora\typora-user-images\image-20200317163434800.png" alt="image-20200317163434800" style="zoom: 80%;" />
+![image-20200317163434800](前后端分离的SpringBoot与Vue开发电商页面.assets/image-20200317163434800-1584609870666.png)
 
 comm：用于请求处理，通用异常类，错误类，ExceptionHandler等；
 
@@ -467,7 +465,7 @@ application：~~工具类~~需要加上包扫描@MapperScan("com.miku.shop.dao")
 
 #### resources包：
 
-![image-20200317165531297](C:\Users\miku\AppData\Roaming\Typora\typora-user-images\image-20200317165531297.png)
+![image-20200317165531297](前后端分离的SpringBoot与Vue开发电商页面.assets/image-20200317165531297-1584609881086.png)
 
 mapping：映射文件存放；
 
@@ -510,9 +508,9 @@ generatorConfig.xml：数据库反向生成配置文件；
   }
   ```
 
-- 访问<http://localhost:8081/test> 发现成功返回json数据
+- 访问<http://localhost:8081/test> 发现成功返回数据
 
-  ![image-20200318193427602](C:\Users\miku\AppData\Roaming\Typora\typora-user-images\image-20200318193427602.png)
+  ![image-20200318193427602](前后端分离的SpringBoot与Vue开发电商页面.assets/image-20200318193427602.png)
 
 ### 加载Thymeleaf 模板
 
@@ -583,7 +581,7 @@ CREATE TABLE goods(
 
 插入2行数据：
 
-![image-20200318200756119](C:\Users\miku\AppData\Roaming\Typora\typora-user-images\image-20200318200756119.png)
+![image-20200318200719830](前后端分离的SpringBoot与Vue开发电商页面.assets/image-20200318200719830.png)
 
 ### Mybatis获取MySQL数据库的数据
 
@@ -707,7 +705,7 @@ mybatis我认为是一种持久层的框架，使用了xml将sql与程序实现�
 
 - 配置maven运行：将按照generatorConfig.xml的配置反向生成
 
-![image-20200318202109151](C:\Users\miku\AppData\Roaming\Typora\typora-user-images\image-20200318202109151.png)
+![image-20200318202109151](前后端分离的SpringBoot与Vue开发电商页面.assets/image-20200318202109151-1584609988081.png)
 
 - 操作数据库
 
@@ -802,7 +800,7 @@ mybatis我认为是一种持久层的框架，使用了xml将sql与程序实现�
 
 创建通用返回值包comm：
 
-![image-20200319143541092](C:\Users\miku\AppData\Roaming\Typora\typora-user-images\image-20200319143541092.png)
+![image-20200319143541092](前后端分离的SpringBoot与Vue开发电商页面.assets/image-20200319143541092.png)
 
 创建请求对应处理类：CommonRes：请求处理成功或失败：
 
@@ -909,7 +907,7 @@ public enum EmBusinessError {
 
 当非请求参数错误时，我们怎么处理这个异常呢？
 
-![image-20200319150430145](C:\Users\miku\AppData\Roaming\Typora\typora-user-images\image-20200319150430145.png)
+![image-20200319150430145](前后端分离的SpringBoot与Vue开发电商页面.assets/image-20200319150430145.png)
 
 创建异常捕获类：BussinessException：
 
@@ -1133,9 +1131,9 @@ spring.mvc.static-path-pattern=/static/**
    </delete>
    ```
 
-   ![image-20200319163236129](C:\Users\miku\AppData\Roaming\Typora\typora-user-images\image-20200319163236129.png)
+   ![image-20200319163236129](前后端分离的SpringBoot与Vue开发电商页面.assets/image-20200319163236129.png)
 
-   ![image-20200319163254912](C:\Users\miku\AppData\Roaming\Typora\typora-user-images\image-20200319163254912.png)
+   ![image-20200319163254912](前后端分离的SpringBoot与Vue开发电商页面.assets/image-20200319163254912.png)
 
 3. Dao：
 
