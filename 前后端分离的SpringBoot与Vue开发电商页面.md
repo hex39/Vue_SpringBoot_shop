@@ -1,4 +1,4 @@
-## 前后端分离的SpringBoot与Vue开发电商页面
+# 前后端分离的SpringBoot与Vue开发电商项目
 
 - ### 简介
 
@@ -800,11 +800,361 @@ mybatis我认为是一种持久层的框架，使用了xml将sql与程序实现�
 
 ### 通用异常处理
 
-带我飞
+创建通用返回值包comm：
 
+![image-20200319143541092](C:\Users\miku\AppData\Roaming\Typora\typora-user-images\image-20200319143541092.png)
 
+创建请求对应处理类：CommonRes：请求处理成功或失败：
 
+```java
+public class CommonRes {
+    //表明请求处理的结果 success OR fail
+    private String status;
+	// success->Object;fail->错误码
+    private Object data;
+    //定义成功方法，自动返回success
+	public static CommonRes create(Object object) {
+        return create(object, "success");
+    }
+	//定义一个通用的返回值对象,返回了错误码，将结果封装 
+    public static CommonRes create(Object object, String status) {
+        CommonRes commonRes = new CommonRes();
+        commonRes.setStatus(status);
+        commonRes.setData(object);
+        return commonRes;
+    }
+	public String getStatus() {
+        return status;
+    }
+	public void setStatus(String status) {
+        this.status = status;
+    }
+	public Object getData() {
+        return data;
+    }
+	public void setData(Object data) {
+        this.data = data;
+    }
+}
+```
 
+创建错误处理类：CommonError：
 
+```java
+//错误处理
+public class CommonError {
+    //错误码
+    private Integer errCode;
+    //错误描述
+    private String errMsg;
+	
+    public CommonError(Integer errCode, String errMsg) {
+        this.errCode = errCode;
+        this.errMsg = errMsg;
+    }
+	
+    public CommonError(EmBusinessError emBusinessError) {
+        this.errCode = emBusinessError.getErrCode();
+        this.errMsg = emBusinessError.getErrMsg();
+    }
 
+    public Integer getErrCode() {
+        return errCode;
+    }
+	public void setErrCode(Integer errCode) {
+        this.errCode = errCode;
+    }
+	public String getErrMsg() {
+        return errMsg;
+    }
+	public void setErrMsg(String errMsg) {
+        this.errMsg = errMsg;
+    }
+}
+```
 
+创建业务通用Error信息的枚举类：EmBusinessError：放了一些错误码
+
+```java
+public enum EmBusinessError {
+    NO_OBJECT_FOUND(10000, "请求对象不存在"),
+    UNKNOE_ERROR(10001, "未知错误"),
+    NO_HANDLER_FOUND(10002, "找不到对应路径"),
+    BIND_EXCEPTION_FOUND(10003, "参数错误"),
+	;
+	
+    private Integer errCode;
+    private String errMsg;
+	//返回错误码与对应的错误信息
+    EmBusinessError(Integer errCode,String errMsg){
+        this.errCode=errCode;
+        this.errMsg =errMsg;
+    }
+	public Integer getErrCode() {
+        return errCode;
+    }
+	public void setErrCode(Integer errCode) {
+        this.errCode = errCode;
+    }
+	public String getErrMsg() {
+        return errMsg;
+    }
+	 public void setErrMsg(String errMsg) {
+        this.errMsg = errMsg;
+    }
+}
+```
+
+### 控制器与参数异常统一处理
+
+当非请求参数错误时，我们怎么处理这个异常呢？
+
+![image-20200319150430145](C:\Users\miku\AppData\Roaming\Typora\typora-user-images\image-20200319150430145.png)
+
+创建异常捕获类：BussinessException：
+
+```java
+public class BusinessException extends Exception{
+    //这个错误处理类名字虽叫error，其实只是用来测试返回的错误码罢了。
+    private CommonError commonError;
+	//又对错误码处理类进行了封装
+    public BusinessException(EmBusinessError emBusinessError) {
+        super();
+        //把枚举类的信息传到CommonError里。
+        this.commonError = new CommonError(emBusinessError);
+    }
+
+    public CommonError getCommonError() {
+        return commonError;
+    }
+	public void setCommonError(CommonError commonError) {
+        this.commonError = commonError;
+    }
+}
+```
+
+！真正的通用异常处理：GlobalExceptionHandler：
+
+```xml
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-aop</artifactId>
+```
+
+做了切面，只要访问controller，所有异常都可以进行处理。
+
+```java
+@EnableAspectJAutoProxy(proxyTargetClass = true)
+```
+
+增强版@ControllerAdvice，这注解有三个用处：全局异常处理、全局数据绑定、全局数据预处理。在 Spring Boot 中可以直接使用。
+
+```java
+@ControllerAdvice
+public class GlobalExceptionHandler {
+    @ExceptionHandler(Exception.class)
+    @ResponseBody
+    public CommonRes doError(HttpServletRequest request, HttpServletResponse response, Exception exception) {
+        if (exception instanceof BusinessException) {
+            return CommonRes.create(((BusinessException) exception).getCommonError(), "fail");
+        } else if (exception instanceof NoHandlerFoundException){
+            CommonError commonError = new CommonError(EmBusinessError.NO_HANDLER_FOUND);
+            return CommonRes.create(commonError, "fail");
+        } else if (exception instanceof ServletRequestBindingException){
+            CommonError commonError = new CommonError(EmBusinessError.BIND_EXCEPTION_FOUND);
+            return CommonRes.create(commonError, "fail");
+        } else {
+            CommonError commonError = new CommonError(EmBusinessError.UNKNOE_ERROR);
+            return CommonRes.create(commonError, "fail");
+        }
+    }
+}
+```
+
+404页面单独配置：
+
+```properties
+#配置404异常处理
+#add-mappings true表示所有controller都没有命中，则由默认handler处理
+#除static设置后其他文件若没有controller处理则报no-handler错误
+spring.resources.add-mappings=true
+spring.mvc.throw-exception-if-no-handler-found=true
+spring.mvc.static-path-pattern=/static/**
+```
+
+## SpringBoot与Vue的整合
+
+将HBuilderX创建的vue项目copy到static目录里即可，需要最新的jquery.min.js以及vue.js
+
+### 商品查询：
+
+1. xml写sql语句：
+
+   ```xml
+   <select id="findAll" resultMap="BaseResultMap"  >
+     select
+     <include refid="Base_Column_List" />
+     from goods
+   </select>
+   ```
+
+2. Dao添加方法：
+
+   ```java
+   List<Goods> findAll();
+   ```
+
+3. Service添加方法
+
+   ```java
+   List<Goods> findAll();
+   ```
+
+4. Controller添加方法：
+
+   ```java
+   @RequestMapping("/findAll")
+   @ResponseBody
+   public CommonRes findAll() throws BusinessException {
+       List<Goods> lists =goodsService.findAll();
+       if (lists == null) {
+           throw new BusinessException(EmBusinessError.NO_OBJECT_FOUND);
+       }else {
+           return CommonRes.create(lists);
+       }
+   }
+   ```
+
+5. shop.html里添加show方法，通过网络，查询并显示所有商品；
+
+   ```js
+   show(){
+       $.ajax({
+           url: "/goods/findAll",
+           contentType: "application/json;charset=utf-8",
+           dataType: "json",
+           success: function (data) {
+               console.log(data);
+               vm.goodsArray = data.data;
+           }
+       });
+   }
+   ```
+
+6. 创vue的created方法，这是它的一个生命周期钩子函数，就是一个vue实例被生成后调用这个函数。一般可以在created函数中调用ajax获取页面初始化所需的数据。
+
+   ```js
+   created: function () { this.show() },
+   ```
+
+   目的是第一次访问时，进行渲染前，调用show()得到所有商品
+
+### 商品添加/修改：
+
+1. Service：
+
+   ```java
+   int insert(Goods goods);
+   int updateByPrimaryKey(Goods goods);
+   ```
+
+2. Controller：
+
+   ```java
+   @RequestMapping(value = "/insertgoods",method = RequestMethod.POST)
+   @ResponseBody
+   public CommonRes insert(Goods goods) {
+       int id = goodsService.insert(goods);
+       return CommonRes.create(id);
+   }
+   
+   @RequestMapping(value = "/updategoods",method = RequestMethod.POST)
+   @ResponseBody
+   public CommonRes update(Goods goods){
+       int id = goodsService.updateByPrimaryKey(goods);
+       return CommonRes.create(id);
+   }
+   ```
+
+3. shop.html：
+
+   ```js
+   addGoods(){
+       _this = this,
+       $.ajax({
+           url: "/goods/insertgoods",
+           data: _this.goods,
+           type: "post",
+           success: function(){
+               alert("添加成功！");
+               _this.show();
+           }, error: function (rel) {
+               alert(rel+"添加失败！")
+           }
+       })
+       _this.show(),
+   },
+   	updateGoods(){
+           _this = this
+           $.ajax({
+               url: "/goods/updategoods",
+               data: _this.goods,
+               type: "post",
+               success: function(){
+                   alert("修改成功！");
+                   _this.show();
+               }, error: function (rel) {
+                   alert(rel+"修改失败！")
+               }
+           })
+           _this.show()
+       },    
+   ```
+
+### 商品删除：
+
+1. 因为需要在ajax中将数组转换成Json字符串，所以加上：
+
+   ```xml
+   <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.8.8.1</version>
+   </dependency>
+   ```
+
+2. xml写sql语句：
+
+   ```xml
+   <delete id="deleteBatch">
+       DELETE FROM goods where id in
+       <foreach collection="array" item="id" open="(" separator="," close=")">
+           #{id}
+       </foreach>
+   </delete>
+   ```
+
+   ![image-20200319163236129](C:\Users\miku\AppData\Roaming\Typora\typora-user-images\image-20200319163236129.png)
+
+   ![image-20200319163254912](C:\Users\miku\AppData\Roaming\Typora\typora-user-images\image-20200319163254912.png)
+
+3. Dao：
+
+   ```java
+   void deleteBatch(Long[] ids);
+   ```
+
+4. Controller：
+
+   ```java
+   @RequestMapping(value = "/deletegoods",method = RequestMethod.POST)
+   @ResponseBody
+   public CommonRes delete(@RequestBody Long[]ids)throws BusinessException{
+       //int id = goodsService.updateByPrimaryKey(goods);
+       goodsService.deleteBatch(ids);
+       return CommonRes.create("0");
+   }
+   ```
+
+## 总结
+
+springboot与vue整合搭建了仿并夕夕的商品页面，有一些功能还不完善，但我从中学到了许多，还需要加强vue的学习以及Mybatis的应用，数据的增删改查还需要反复练习！下一步是后台管理系统的开发，2020年3月19日。
