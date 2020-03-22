@@ -5,6 +5,12 @@ git clone的速度实在太慢；
 git config --global http.proxy 'socks5://127.0.0.1:1080'
 git config --global https.proxy 'socks5://127.0.0.1:1080'
 
+//移除当前关联的远程仓库
+git remote rm origin
+//添加新的ssh地址
+git remote add origin ssh地址
+
+
 git config --global --unset http.proxy
 git config --global --unset https.proxy
 
