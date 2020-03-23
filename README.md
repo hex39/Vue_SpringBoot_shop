@@ -1,4 +1,4 @@
-# :punch:基于Spring Boot与 Vue的电商项目
+# 基于Spring Boot与 Vue的电商项目
 
 ## :notebook_with_decorative_cover:请查看[前后端分离的SpringBoot与Vue开发电商页面笔记](https://github.com/hex39/Vue_SpringBoot_shop/blob/master/前后端分离的SpringBoot与Vue开发电商页面.md)
 
