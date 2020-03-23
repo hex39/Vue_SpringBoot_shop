@@ -1,6 +1,10 @@
-# 基于Spring Boot与 Vue的电商项目
+# :punch:基于Spring Boot与 Vue的电商项目
 
-## 请查看[前后端分离的SpringBoot与Vue开发电商页面笔记](https://github.com/hex39/Vue_SpringBoot_shop/blob/master/前后端分离的SpringBoot与Vue开发电商页面.md)
+## :notebook_with_decorative_cover:请查看[前后端分离的SpringBoot与Vue开发电商页面笔记](https://github.com/hex39/Vue_SpringBoot_shop/blob/master/前后端分离的SpringBoot与Vue开发电商页面.md)
+
+## :floppy_disk:项目展示：
+
+![shop效果展示](README.assets/shop效果展示.gif)
 
 学会创造个人仓库
 
