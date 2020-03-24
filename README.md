@@ -6,9 +6,31 @@
 
 ![shop效果展示](README.assets/shop效果展示.gif)
 
-学会创造个人仓库
+:point_right:================================================================:point_left:
 
-一个springboot + vue实现电商项目（单页面）
+发现没用梯子登录github，md文件的图片都加载不出来了！
+
+百度一波，有解决方法：使用HOSTS加速对github网站加载的资源网站域名解析：
+
+修改 C:\Windows\System32\drivers\etc 中的hosts文件（PS：若没有修改权限，可以鼠标右键，属性，安全，修改权限。或者将hosts文件复制到桌面，修改之后，复制到原文件夹）
+
+![image-20200324223512050](README.assets/image-20200324223512050.png)
+
+使用这个网站查询  `avatars0.githubusercontent.com` 得到最新地址：
+
+<img src="README.assets/image-20200324223743339.png" alt="image-20200324223743339" style="zoom: 50%;" />
+
+在本地hosts文件末尾添加查到的最新IP Address：
+
+```hosts
+# GitHub Start
+最新IP .githubusercontent.com
+# GitHub End
+```
+
+刷新github，图片也能流畅加载了，gif图也彳亍了。~~速度还是挺慢的，还得靠梯子去下载~~
+
+:point_right:===========================================================​=====:point_left:
 
 嫌弃了git本地仓库直接建立在桌面，浪费了C盘的空间，我在D盘又新建了文件夹，将git仓库初始化。发现clone下载速度巨慢，通过设置代理socks：1080的方式，让下载速度变快：
 
